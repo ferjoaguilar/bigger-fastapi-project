@@ -1,6 +1,6 @@
 [tool.ruff]
 line-length = 79
-lint.select = ["T201"]
+lint.select = ["T201", "F401"]
 
 [tool.ruff.format]
 quote-style = "single"
