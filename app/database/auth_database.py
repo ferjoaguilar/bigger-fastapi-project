@@ -1,3 +1,5 @@
+from mysql import connector
+from app.utils.exceptions_utils import AlreadyExistsException
 from schemas.auth_schemas import UserCreate
 from repositories.auth_repository import AuthRepository
 from config.mysql_config import get_mysql_connection
@@ -12,6 +14,10 @@ class AuthDatabase(AuthRepository):
             await cursor.execute(query, values)
             await conn.commit()
             return user
+        except connector.Error as e:
+            if e.errno == 1062:
+                raise AlreadyExistsException("User already exists")
+            raise e
         finally:
             await cursor.close()
             await conn.close()
